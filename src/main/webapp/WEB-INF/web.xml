@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+		 version="2.4">
+
+	<display-name>RFID</display-name>
+
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<session-config>
+		<session-timeout>20</session-timeout>
+	</session-config>
+
+	<filter>
+		<filter-name>ClickjackFilterSameOrigin</filter-name>
+		<filter-class>org.bumiasri.rfid.ClickjackFilter</filter-class>
+		<init-param>
+			<param-name>mode</param-name>
+			<param-value>SAMEORIGIN</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>ClickjackFilterSameOrigin</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<security-constraint>
+		<display-name>Security Constraint</display-name>
+		<web-resource-collection>
+			<web-resource-name>WRCollection</web-resource-name>
+			<url-pattern>/module/home/login.jsp</url-pattern>
+			<url-pattern>/*</url-pattern>
+		</web-resource-collection>
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
+	<error-page>
+		<error-code>403</error-code>
+		<location>/errors/403.html</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/errors/404.html</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/errors/500.html</location>
+	</error-page>
+	<error-page>
+		<error-code>502</error-code>
+		<location>/errors/502.html</location>
+	</error-page>
+	<error-page>
+		<error-code>503</error-code>
+		<location>/errors/503.html</location>
+	</error-page>
+	<error-page>
+		<error-code>504</error-code>
+		<location>/errors/504.html</location>
+	</error-page>
+
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/errors/500.html</location>
+	</error-page>
+	<error-page>
+		<exception-type>javax.servlet.ServletException</exception-type>
+		<location>/errors/500.html</location>
+	</error-page>
+
+</web-app>

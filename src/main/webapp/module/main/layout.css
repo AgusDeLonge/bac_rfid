@@ -1,0 +1,253 @@
+#MainHeader {
+	background: #201f2b;
+	/*background: #32404E;*/
+	/*background: #35BAF6;*/
+}
+
+#MainHeaderText {
+	padding: 3px 10px 10px 5px;
+	color: #d6d7e1;
+	font-size: 14px;
+	font-weight: bold;
+	text-shadow: 0 1px 0 #4e691f;
+}
+
+#MainSeparator {
+	background: #35BAF6;
+	/*background: #FACC6E;*/
+}
+
+#MainFooter {
+	/*background: #35BAF6;*/
+	/*background: #5FA2DD;*/
+	/*background: #32404E;*/
+	background: #201f2b;
+	text-align: center;
+	color: #d6d7e1;
+	font-size: 12px;
+}
+
+#footer {
+	background: #ffffff;
+	text-align: center;
+	color: #5FA2DD;
+	font-size: 12px;
+	font-family: 'Open Sans', sans-serif;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400;
+}
+
+#loading-mask {
+	background-color: white;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	z-index: 20000;
+}
+#loading {
+	height: auto;
+	position: absolute;
+	left: 43%;
+	top: 40%;
+	padding: 2px;
+	z-index: 20001;
+}
+#loading a {
+	color: #225588;
+}
+#loading .loading-indicator{
+	background: white;
+	color: #444;
+	font: bold 13px Helvetica, Arial, sans-serif;
+	height: auto;
+	margin: 0;
+	padding: 10px;
+}
+#loading-msg {
+	font-size: 10px;
+	font-weight: normal;
+}
+
+.x-treelist-expander-first .x-treelist-item-expander {
+	margin-top: 15px;
+	left: auto;
+	right: 0;
+}
+.x-treelist-expander-first .x-treelist-item-icon {
+	left: 0;
+}
+
+.x-treelist-nav {
+	background-color: #32404e;
+	background-position-x: 24px;
+	padding: 0 0 0 0;
+	z-index: 99;
+	position: relative
+}
+.x-treelist-nav .x-treelist-toolstrip {
+	background-color: #32404e
+}
+.x-treelist-nav .x-treelist-item-selected.x-treelist-item-tool {
+	color: #f0f0f0;
+	background-color: #35BAF6
+}
+.x-treelist-nav .x-treelist-item-selected > .x-treelist-row {
+	background-color: #3f505f
+}
+.x-treelist-nav .x-treelist-item-tool {
+	padding-left: 10px;
+	padding-right: 10px
+}
+.x-treelist-nav .x-treelist-item-tool-floated:after {
+	height: 46px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	content: " ";
+	width: 4px;
+	background-color: #35BAF6
+}
+.x-treelist-nav .x-treelist-item-icon,
+.x-treelist-nav .x-treelist-item-tool,
+.x-treelist-nav .x-treelist-item-expander {
+	line-height: 46px;
+	text-align: center
+}
+.x-treelist-nav .x-treelist-item-icon,
+.x-treelist-nav .x-treelist-item-tool {
+	color: #adb3b8;
+	font-size: 20px;
+	width: 24px;
+	/*margin-top: 7px;*/
+}
+.x-treelist-nav .x-treelist-item-tool {
+	width: 44px
+}
+.x-treelist-nav .x-treelist-item-expander {
+	color: #adb3b8;
+	font-size: 20px;
+	width: 24px;
+}
+.x-treelist-nav .x-treelist-item-text {
+	color: #adb3b8;
+	margin-right: 24px;
+	line-height: 46px;
+	margin-left: 30px;
+	font-weight: 500
+}
+.x-treelist-nav .x-treelist-row {
+	padding-left: 10px;
+	padding-right: 10px
+}
+.x-treelist-nav .x-treelist-row:hover:before,
+.x-treelist-nav .x-treelist-item-selected > .x-treelist-row:before {
+	content: " ";
+	position: absolute;
+	display: block;
+	left: 0;
+	top: 0;
+	width: 6px;
+	height: 100%
+}
+.x-treelist-nav .x-treelist-row:hover:before {
+	background-color: #89bae6
+}
+.x-treelist-nav .x-treelist-item-selected > .x-treelist-row:hover:before {
+	background-color: #89bae6
+}
+.x-treelist-nav .x-treelist-item-selected > .x-treelist-row:before {
+	background-color: #35BAF6
+}
+.x-treelist-nav .x-treelist-item-floated .x-treelist-container {
+	width: auto
+}
+.x-treelist-nav .x-treelist-item-floated > .x-treelist-row {
+	background-color: #32404e
+}
+.x-treelist-nav .x-treelist-item-floated > .x-treelist-container {
+	margin-left: -24px
+}
+.x-big .x-treelist-nav .x-treelist-item-floated > .x-treelist-container {
+	margin-left: 0
+}
+.x-treelist-nav .x-treelist-item-floated > * > * > .x-treelist-item-text {
+	margin-left: 0
+}
+.x-treelist-nav .x-treelist-item-floated > * .x-treelist-row {
+	padding-left: 0
+}
+.x-treelist-nav .x-treelist-item-floated .x-treelist-row:before {
+	width: 0
+}
+.x-treelist-nav .x-treelist-item-floated > .x-treelist-row:hover {
+	background-color: #32404e
+}
+.x-treelist-nav .x-treelist-item-floated > .x-treelist-row:hover > * > .x-treelist-item-text {
+	color: #adb3b8
+}
+.x-treelist-nav .x-treelist-item-expanded {
+	background-color: #2c3845
+}
+.x-treelist-nav.x-treelist-highlight-path .x-treelist-item:hover > * > .x-treelist-item-icon {
+	color: #fff;
+	transition: color 0.5s
+}
+.x-treelist-nav.x-treelist-highlight-path .x-treelist-item:hover > * > .x-treelist-item-text {
+	color: #fff;
+	transition: color 0.5s
+}
+.x-treelist-nav.x-treelist-highlight-path .x-treelist-item:hover > * > .x-treelist-item-expander {
+	color: #fff;
+	transition: color 0.5s
+}
+.x-treelist-nav .x-treelist-row:hover {
+	background-color: #4f606f
+}
+.x-treelist-nav .x-treelist-row:hover > * > .x-treelist-item-icon {
+	color: #fff;
+	transition: color 0.5s
+}
+.x-treelist-nav .x-treelist-row:hover > * > .x-treelist-item-text {
+	color: #fff;
+	transition: color 0.5s
+}
+.x-treelist-nav .x-treelist-row:hover > * > .x-treelist-item-expander {
+	color: #fff;
+	transition: color 0.5s
+}
+.x-treelist-nav .x-treelist-expander-first .x-treelist-item-icon {
+	left: 24px
+}
+.x-treelist-nav .x-treelist-expander-first .x-treelist-item-text {
+	margin-left: 54px;
+	margin-right: 0
+}
+.x-treelist-nav .x-treelist-expander-first .x-treelist-item-expander {
+	right: 0;
+}
+.x-treelist-nav .x-treelist-expander-first .x-treelist-item-hide-icon > * > * > .x-treelist-item-text {
+	margin-left: 30px
+}
+.x-treelist-nav .x-treelist-item-hide-icon > * > * > .x-treelist-item-text {
+	margin-left: 6px
+}
+.treelist-with-nav .x-panel-body {
+	background-color: #32404e
+}
+.x-treelist-item-icon:before, .x-treelist-item-tool:before, .x-treelist-item-expander {
+	line-height: 46px !important;
+}
+
+td.wrap-text div {
+	white-space: normal;
+}
+
+.x-action-col-icon {
+	height: 16px;
+	width: 16px;
+	margin-left: 5px;
+	margin-right: 5px;
+}

@@ -29,6 +29,7 @@ public class XWeb {
 
 	public static long _c_uid = 0;
 	public static String _c_username = "Anonymous";
+	public static long _c_gid = 0;
 
 	public static Connection getConnection() {
 		Connection connection = null;

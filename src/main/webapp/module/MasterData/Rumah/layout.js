@@ -1,7 +1,7 @@
 function XWebMasterDataRumah() {
 	this.id = "MasterData_Rumah";
 	this.dir = XWeb.generateModDir(this.id);
-	this.perm = "4";
+	this.perm = 0;
 
 	this.store = Ext.create("Ext.data.Store", {
 		autoLoad: false,
@@ -33,6 +33,7 @@ function XWebMasterDataRumah() {
 	this.buttonAdd = Ext.create("Ext.button.Button", {
 		text: "Tambah",
 		iconCls: "x-fa fa-plus",
+		disabled: true,
 		scope: this,
 		handler: function() {
 			this.doAdd();
@@ -80,15 +81,17 @@ function XWebMasterDataRumah() {
 				tooltip: "Ubah",
 				scope: this,
 				handler: function (g, r) {
-					var rec = g.getStore().getAt(r);
+					if (this.perm >= 3) {
+						var rec = g.getStore().getAt(r);
 
-					this.form.getForm().reset();
-					this.form.loadRecord(rec);
-					this.formID.setReadOnly(true);
-					this.store.proxy.extraParams.action = "update";
-					this.win.setIconCls("x-fa fa-pencil");
-					this.win.setTitle("Ubah Data");
-					this.win.show();
+						this.form.getForm().reset();
+						this.form.loadRecord(rec);
+						this.formID.setReadOnly(true);
+						this.store.proxy.extraParams.action = "update";
+						this.win.setIconCls("x-fa fa-pencil");
+						this.win.setTitle("Ubah Data");
+						this.win.show();
+					} else XWeb.toast.info("Anda tidak mempunyai hak akses untuk merubah data!");
 				}
 			},
 			delete: {
@@ -96,20 +99,22 @@ function XWebMasterDataRumah() {
 				tooltip: "Hapus",
 				scope: this,
 				handler: function (g, r) {
-					var rec = g.getStore().getAt(r);
+					if (this.perm >= 4) {
+						var rec = g.getStore().getAt(r);
 
-					Ext.MessageBox.confirm(
-						"Konfirmasi",
-						"Data akan dihapus. <br/> Apakah anda yakin?",
-						function (btn) {
-							if (btn === "yes") {
-								this.form.getForm().reset();
-								this.form.loadRecord(rec);
-								this.store.proxy.extraParams.action = "destroy";
-								this.doSave();
-							}
-						}, this
-					);
+						Ext.MessageBox.confirm(
+							"Konfirmasi",
+							"Data akan dihapus. <br/> Apakah anda yakin?",
+							function (btn) {
+								if (btn === "yes") {
+									this.form.getForm().reset();
+									this.form.loadRecord(rec);
+									this.store.proxy.extraParams.action = "destroy";
+									this.doSave();
+								}
+							}, this
+						);
+					} else XWeb.toast.info("Anda tidak mempunyai hak akses untuk menghapus data!");
 				}
 			}
 		},
@@ -258,7 +263,23 @@ function XWebMasterDataRumah() {
 		this.store.load();
 	};
 
-	this.doRefresh = function () {
+	this.doRefresh = function (perm) {
+		this.perm = perm;
+
+		switch (this.perm) {
+			case 2 :
+				this.buttonAdd.setDisabled(false);
+				break;
+			case 3 :
+				this.buttonAdd.setDisabled(false);
+				break;
+			case 4 :
+				this.buttonAdd.setDisabled(false);
+				break;
+			default :
+				this.buttonAdd.setDisabled(true);
+		}
+
 		this.doLoad();
 	};
 }

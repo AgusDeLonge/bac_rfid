@@ -3,6 +3,7 @@
 	try {
 		session.removeAttribute(XWeb._name + ".user.id");
 		session.removeAttribute(XWeb._name + ".user.name");
+		session.removeAttribute(XWeb._name + ".user.gid");
 
 		String m_home = request.getContextPath();
 

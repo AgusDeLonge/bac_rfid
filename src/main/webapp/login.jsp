@@ -22,6 +22,7 @@
 		String password = request.getParameter("password");
 		int id;
 		String realname;
+		int gid;
 		int status;
 
 		if (null == username || null == password) {
@@ -37,6 +38,7 @@
 		/* Check if username and password is valid */
 		_q ="select " +
 			"	id, " +
+			"	group_id, " +
 			"	name, " +
 			"	status " +
 			"from users " +
@@ -53,6 +55,7 @@
 		}
 
 		id = _rs.getInt("id");
+		gid = _rs.getInt("group_id");
 		realname = _rs.getString("name");
 		status = _rs.getInt("status");
 
@@ -67,6 +70,7 @@
 		/* Save user info to session */
 		session.setAttribute(XWeb._name + ".user.id", Integer.toString(id));
 		session.setAttribute(XWeb._name + ".user.name", realname);
+		session.setAttribute(XWeb._name + ".user.gid", Integer.toString(gid));
 
 		/* Forward user to main page */
 		_r.put("success", true);

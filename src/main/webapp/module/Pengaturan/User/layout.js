@@ -1,5 +1,5 @@
-function XWebMasterDataWarga() {
-	this.id = "MasterData_Warga";
+function XWebPengaturanUser() {
+	this.id = "Pengaturan_User";
 	this.dir = XWeb.generateModDir(this.id);
 	this.perm = 0;
 
@@ -8,9 +8,10 @@ function XWebMasterDataWarga() {
 		pageSize: _g_paging_size,
 		fields: [
 			"id",
-			"house_id",
+			"group_id",
 			"name",
-			"owner",
+			"username",
+			"password",
 			"status"
 		],
 		proxy: {
@@ -33,7 +34,7 @@ function XWebMasterDataWarga() {
 		}
 	});
 
-	this.storeHouses = Ext.create("Ext.data.Store", {
+	this.storeGroups = Ext.create("Ext.data.Store", {
 		autoLoad: false,
 		fields: [
 			"id",
@@ -41,7 +42,7 @@ function XWebMasterDataWarga() {
 		],
 		proxy: {
 			type: "ajax",
-			url: this.dir + "/readHouses.jsp",
+			url: this.dir + "/readGroups.jsp",
 			reader: {
 				type: "json",
 				rootProperty: "data"
@@ -87,7 +88,7 @@ function XWebMasterDataWarga() {
 		id: this.id,
 		store: this.store,
 		layout: "fit",
-		title: "Master Data - Warga",
+		title: "Pengaturan - User",
 		headerPosition: "left",
 		titleRotation: 2,
 		titleAlign: "right",
@@ -105,7 +106,8 @@ function XWebMasterDataWarga() {
 
 						this.form.getForm().reset();
 						this.form.loadRecord(rec);
-						this.formID.setReadOnly(true);
+						this.formPassword.setValue("-");
+						this.formPassword.setVisible(false);
 						this.store.proxy.extraParams.action = "update";
 						this.win.setIconCls("x-fa fa-pencil");
 						this.win.setTitle("Ubah Data");
@@ -135,54 +137,52 @@ function XWebMasterDataWarga() {
 						);
 					} else XWeb.toast.info("Anda tidak mempunyai hak akses untuk menghapus data!");
 				}
+			},
+			reset: {
+				iconCls: "x-fa fa-key",
+				tooltip: "Reset Password",
+				scope: this,
+				handler: function (g, r) {
+					if (this.perm >= 4) {
+						var rec = g.getStore().getAt(r);
+
+						this.formReset.getForm().reset();
+						this.formReset.loadRecord(rec);
+						this.winReset.setIconCls("x-fa fa-key");
+						this.winReset.show();
+					} else XWeb.toast.info("Anda tidak mempunyai hak akses untuk mereset password!");
+				}
 			}
 		},
 
 		columns: [{
-			header: "ID",
-			dataIndex: "id",
-			width: 100,
-			align: "center"
-		}, {
-			header: "Blok",
-			dataIndex: "house_id",
-			width: 100,
-			align: "center"
-		}, {
 			header: "Nama",
 			dataIndex: "name",
 			flex: 1
 		}, {
-			header: "Pemilik",
-			dataIndex: "owner",
-			width: 100,
-			align: "center",
-			renderer: function (v) {
-				if (v == 1) {
-					return "Ya";
-				} else {
-					return "Tidak";
-				}
-			}
+			header: "Group",
+			dataIndex: "group_id",
+			flex: 1,
+			renderer: this.storeGroups.renderData("id", "name")
+		}, {
+			header: "Username",
+			dataIndex: "username",
+			flex: 1
 		}, {
 			header: "Status",
 			dataIndex: "status",
-			width: 100,
+			width: 75,
 			align: "center",
-			renderer: function (v) {
-				if (v == 1) {
-					return "Aktif";
-				} else {
-					return "Tidak Aktif";
-				}
-			}
+			disabled: true,
+			disabledCls: "",
+			xtype: "checkcolumn"
 		}, {
 			menuDisabled: true,
 			sortable: false,
 			xtype: "actioncolumn",
-			width: 60,
+			width: 90,
 			align: "center",
-			items: ["@edit", "@delete"]
+			items: ["@edit", "@delete", "@reset"]
 		}],
 		dockedItems: [{
 			xtype: "toolbar",
@@ -206,16 +206,16 @@ function XWebMasterDataWarga() {
 		fieldLabel: "ID",
 		itemId: "id",
 		name: "id",
-		allowBlank: false
+		hidden: true
 	});
 
-	this.formBlok = Ext.create("Ext.form.field.ComboBox", {
-		fieldLabel: "Blok",
-		itemId: "house_id",
-		name: "house_id",
-		store: this.storeHouses,
+	this.formGroup = Ext.create("Ext.form.field.ComboBox", {
+		fieldLabel: "Group",
+		itemId: "group_id",
+		name: "group_id",
+		store: this.storeGroups,
 		valueField: "id",
-		displayField: "id",
+		displayField: "name",
 		queryMode: "local",
 		allowBlank: false
 	});
@@ -227,32 +227,28 @@ function XWebMasterDataWarga() {
 		allowBlank: false
 	});
 
-	this.formOwnerYa = Ext.create("Ext.form.field.Radio", {
-		itemId: "owner_ya",
-		name: "owner",
-		boxLabel: "Ya",
-		inputValue: 1
+	this.formUsername = Ext.create("Ext.form.field.Text", {
+		fieldLabel: "Username",
+		itemId: "username",
+		name: "username",
+		allowBlank: false
 	});
 
-	this.formOwnerTidak = Ext.create("Ext.form.field.Radio", {
-		itemId: "owner_tidak",
-		name: "owner",
-		boxLabel: "Tidak",
-		inputValue: 0
+	this.formPassword = Ext.create("Ext.form.field.Text", {
+		fieldLabel: "Password",
+		itemId: "password",
+		inputType: "password",
+		allowBlank: false
 	});
 
-	this.formStatusAktif = Ext.create("Ext.form.field.Radio", {
-		itemId: "status_aktif",
-		name: "status",
+	this.formStatus = Ext.create("Ext.form.field.Checkbox", {
+		fieldLabel: "Status",
 		boxLabel: "Aktif",
-		inputValue: 1
-	});
-
-	this.formStatusTidakAktif = Ext.create("Ext.form.field.Radio", {
-		itemId: "status_tidak_aktif",
+		itemId: "status",
 		name: "status",
-		boxLabel: "Tidak AKtif",
-		inputValue: 0
+		inputValue: 1,
+		uncheckedValue: 0,
+		checked: true
 	});
 
 	this.buttonSave = Ext.create("Ext.button.Button", {
@@ -270,40 +266,18 @@ function XWebMasterDataWarga() {
 		width: 500,
 		items: [{
 			xtype: "fieldset",
-			title: "Data Warga",
+			title: "Data User",
 			defaults: {
 				labelWidth: 100,
 				anchor: "100%"
 			},
 			items: [
 				this.formID,
-				this.formBlok,
+				this.formGroup,
 				this.formName,
-				{
-					xtype: "fieldcontainer",
-					fieldLabel: "Pemilik",
-					layout: "hbox",
-					defaults: {
-						flex: 1
-					},
-					items: [
-						this.formOwnerYa,
-						this.formOwnerTidak
-					]
-				},
-
-				{
-					xtype: "fieldcontainer",
-					fieldLabel: "Status",
-					layout: "hbox",
-					defaults: {
-						flex: 1
-					},
-					items: [
-						this.formStatusAktif,
-						this.formStatusTidakAktif
-					]
-				}
+				this.formUsername,
+				this.formPassword,
+				this.formStatus
 			]
 		}],
 		buttons: [
@@ -316,17 +290,78 @@ function XWebMasterDataWarga() {
 		resizable: false,
 		modal: true,
 		closeAction: "method-hide",
-		defaultFocus: "id",
+		defaultFocus: "group_id",
 		items: [
 			this.form
 		]
 	});
 
+	this.formResetID = Ext.create("Ext.form.field.Text", {
+		fieldLabel: "ID",
+		itemId: "reset_id",
+		name: "id",
+		hidden: true
+	});
+
+	this.formResetPassword = Ext.create("Ext.form.field.Text", {
+		fieldLabel: "Password Baru",
+		itemId: "reset_password",
+		inputType: "password",
+		allowBlank: false
+	});
+
+	this.formResetPasswordConfirm = Ext.create("Ext.form.field.Text", {
+		fieldLabel: "Konfirmasi Password",
+		itemId: "reset_password_confirm",
+		inputType: "password",
+		allowBlank: false
+	});
+
+	this.buttonResetSave = Ext.create("Ext.button.Button", {
+		text: "Simpan",
+		iconCls: "x-fa fa-check",
+		formBind: true,
+		scope: this,
+		handler: function () {
+			this.doSaveReset();
+		}
+	});
+
+	this.formReset = Ext.create("Ext.form.Panel", {
+		bodyPadding: "0 10 0 10",
+		width: 500,
+		items: [{
+			xtype: "fieldset",
+			title: "Data Password User",
+			defaults: {
+				labelWidth: 100,
+				anchor: "100%"
+			},
+			items: [
+				this.formResetID,
+				this.formResetPassword,
+				this.formResetPasswordConfirm
+			]
+		}],
+		buttons: [
+			this.buttonResetSave
+		]
+	});
+
+	this.winReset = Ext.create("Ext.window.Window", {
+		title: "Reset Password",
+		resizable: false,
+		modal: true,
+		closeAction: "method-hide",
+		defaultFocus: "reset_password",
+		items: [
+			this.formReset
+		]
+	});
+
 	this.doAdd = function () {
 		this.form.getForm().reset();
-		this.formID.setReadOnly(false);
-		this.formOwnerYa.setValue(1);
-		this.formStatusAktif.setValue(1);
+		this.formPassword.setVisible(true);
 		this.store.proxy.extraParams.action = "create";
 		this.win.setIconCls("x-fa fa-plus");
 		this.win.setTitle("Tambah Data");
@@ -374,13 +409,43 @@ function XWebMasterDataWarga() {
 		});
 	};
 
+	this.doSaveReset = function () {
+		var f = this.formReset.getForm();
+
+		if (this.formResetPassword.getValue() !== this.formResetPasswordConfirm.getValue()) {
+			XWeb.toast.error("Konfirmasi password salah!");
+			return false;
+		}
+
+		f.submit({
+			scope: this,
+			url: this.dir + "/resetPassword.jsp",
+			params: {
+				password: this.formResetPassword.getValue()
+			},
+			success: function (form, action) {
+				XWeb.toast.info(action.result.data);
+				this.winReset.hide();
+				this.panel.getSelectionModel().deselectAll();
+				this.doLoad();
+			},
+			failure: function (form, action) {
+				XWeb.toast.error(action.result.data);
+				this.panel.getSelectionModel().deselectAll();
+				this.winReset.hide();
+				this.doLoad();
+			},
+			clientValidation: false
+		});
+	}
+
 	this.doLoad = function () {
-		this.storeHouses.load({
+		this.storeGroups.load({
 			scope: this,
 			callback: function () {
 				this.store.load();
 			}
-		})
+		});
 	};
 
 	this.doRefresh = function (perm) {
@@ -404,4 +469,4 @@ function XWebMasterDataWarga() {
 	};
 }
 
-var MasterData_Warga = new XWebMasterDataWarga();
+var Pengaturan_User = new XWebPengaturanUser();

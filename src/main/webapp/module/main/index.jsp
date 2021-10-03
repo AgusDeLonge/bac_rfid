@@ -20,6 +20,7 @@
 		else {
 			XWeb._c_uid = Integer.parseInt((String) session.getAttribute(XWeb._name + ".user.id"));
 			XWeb._c_username = (String) session.getAttribute(XWeb._name + ".user.name");
+			XWeb._c_gid = Integer.parseInt((String) session.getAttribute(XWeb._name + ".user.gid"));
 		}
 	}
 %>
@@ -37,6 +38,7 @@
         var _g_paging_size = <%= XWeb._paging_size %>;
         var _g_title = "<%= XWeb._title %>";
         var _g_c_uid = "<%= XWeb._c_uid %>";
+		var _g_c_gid = "<%= XWeb._c_gid %>";
         var _g_c_username = "<%= XWeb._c_username %>";
         var _g_menu_mode = <%= XWeb._menu_mode %>;
 	</script>

@@ -18,15 +18,21 @@
 			String q =	"SELECT	 * " +
 						"FROM	( " +
 						"		SELECT	" +
-						"			id, " +
+						"			a.id, " +
 						"			? depth, " +
-						"			pid parentId, " +
-						"			label, " +
-						"			icon iconCls, " +
-						"			module " +
-						"		FROM menus " +
-						"		WHERE pid = ? " +
-						"		ORDER BY id " +
+						"			a.pid parentId, " +
+						"			a.label, " +
+						"			a.icon iconCls, " +
+						"			a.module, " +
+						"			b.permission " +
+						"		FROM " +
+						"			menus a " +
+						"		RIGHT JOIN " +
+						"			privileges b on a.id = b.menu_id " +
+						"		WHERE " +
+						"			a.pid = ? AND " +
+						"			b.permission > 0 " +
+						"		ORDER BY a.id " +
 						"		) A";
 			ps = db_con.prepareStatement(q);
 			ps.setInt(++i, depth);
@@ -41,6 +47,7 @@
 				o.put("text", "<span title='" + rs.getString("label") + "'>" + rs.getString("label") + "</span>");
 				o.put("iconCls", rs.getString("iconCls"));
 				o.put("module", rs.getString("module"));
+				o.put("permission", rs.getInt("permission"));
 
 				c = getMenu(db_con, o.getIntValue("id"), depth + 1);
 

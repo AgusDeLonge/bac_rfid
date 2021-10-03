@@ -154,6 +154,7 @@ function XWebMain() {
 	this.dir = _g_module_dir + this.id;
 	this.module = "undefined";
 	this.uid = 0;
+	this.gid = 0;
 	this.microMenu = false;
 
 	this.store = Ext.create("Ext.data.TreeStore", {
@@ -162,11 +163,16 @@ function XWebMain() {
 			"id",
 			"pid",
 			"label",
-			"iconCls"
+			"iconCls",
+			"module",
+			"permission"
 		],
 		proxy: {
 			type: "ajax",
 			url: _g_module_path + "menu.jsp",
+			extraParams: {
+				gid: 0
+			},
 			reader: {
 				type: "json"
 			}
@@ -401,6 +407,7 @@ function XWebMain() {
 	};
 
 	this.loadMenu = function() {
+		this.store.proxy.extraParams.gid = _g_c_gid;
 		this.store.load({
 			scope: this,
 			callback: function(r, op, success) {
@@ -435,6 +442,7 @@ function XWebMain() {
 
 	this.init = function () {
 		this.uid = _g_c_uid;
+		this.gid = _g_c_gid;
 
 		this.loadMenu();
 

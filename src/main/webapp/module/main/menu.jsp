@@ -6,7 +6,7 @@
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="org.bumiasri.rfid.XWeb" %>
 <%!
-	private JSONArray getMenu(Connection db_con, int pid, int depth) {
+	private JSONArray getMenu(Connection db_con, int gid, int pid, int depth) {
 		JSONArray a = new JSONArray();
 		JSONObject o;
 		JSONArray c;
@@ -31,12 +31,14 @@
 						"			privileges b on a.id = b.menu_id " +
 						"		WHERE " +
 						"			a.pid = ? AND " +
-						"			b.permission > 0 " +
+						"			b.permission > 0 AND " +
+						"			b.group_id = ? " +
 						"		ORDER BY a.id " +
 						"		) A";
 			ps = db_con.prepareStatement(q);
 			ps.setInt(++i, depth);
 			ps.setInt(++i, pid);
+			ps.setInt(++i, gid);
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
@@ -49,7 +51,7 @@
 				o.put("module", rs.getString("module"));
 				o.put("permission", rs.getInt("permission"));
 
-				c = getMenu(db_con, o.getIntValue("id"), depth + 1);
+				c = getMenu(db_con, gid, o.getIntValue("id"), depth + 1);
 
 				if (c.size() <= 0) {
 					o.put("leaf", true);
@@ -83,7 +85,13 @@
 		_cn = XWeb.getConnection();
 		if (_cn == null) throw new Exception("Tidak ada koneksi ke database!");
 
-		_a = getMenu(_cn, 0, 0);
+		int gid = XWeb.getIntParameter(request, "gid", -1);
+
+		if (gid <= 0) {
+			throw new Exception("Invalid Group Id: " + gid);
+		}
+
+		_a = getMenu(_cn, gid, 0, 0);
 
 		_r.put("text", ".");
 		_r.put("children", _a);
